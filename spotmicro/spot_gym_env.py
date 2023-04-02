@@ -20,7 +20,8 @@ from gym import spaces
 from gym.utils import seeding
 from pkg_resources import parse_version
 from spotmicro import spot
-import pybullet_utils.bullet_client as bullet_client
+# import pybullet_utils.bullet_client as bullet_client
+from spotmicro.util import bullet_client
 from gym.envs.registration import register
 from spotmicro.heightfield import HeightField
 from spotmicro.OpenLoopSM.SpotOL import BezierStepper
@@ -263,7 +264,9 @@ class spotGymEnv(gym.Env):
         self._episode_proto = None
         if self._is_render:
             self._pybullet_client = bullet_client.BulletClient(
-                connection_mode=pybullet.GUI)
+                connection_mode=pybullet.GRAPHICS_SERVER_TCP,
+                server_host='host.docker.internal'
+            )
         else:
             self._pybullet_client = bullet_client.BulletClient()
         if self._urdf_version is None:
